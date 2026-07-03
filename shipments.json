@@ -1,0 +1,150 @@
+{
+  "shipments": [
+    {
+      "id": "2117673",
+      "type": "Ocean LCL",
+      "consignee": "Client A",
+      "country": "Spain",
+      "status": "confirmed",
+      "status_label": "CONFIRMACIÓN DE SALIDA EMITIDA",
+      "confirmed_by": "Operations Team",
+      "confirmed_date": "2026-06-22T01:20:00Z",
+      "departure_date": "2026-06-13T00:00:00Z",
+      "eta_date": "2026-07-30T00:00:00Z",
+      "bl_number": "OBD HBL-BPIO26052496-3",
+      "documentation": {
+        "bill_of_lading": {
+          "status": "completed",
+          "label": "Bill of Lading (BL)"
+        },
+        "commercial_invoice": {
+          "status": "pending",
+          "label": "Factura Comercial"
+        },
+        "packing_list": {
+          "status": "pending",
+          "label": "Packing List"
+        },
+        "dispatch_authorization": {
+          "status": "pending",
+          "label": "Autorización de Despacho"
+        }
+      },
+      "updates": [
+        {
+          "date": "2026-07-03T00:00:00Z",
+          "message": "Última actualización - Espera confirmación",
+          "by": "Sistema"
+        },
+        {
+          "date": "2026-07-01T00:00:00Z",
+          "message": "Predua enviado - A espera factura de impuestos",
+          "by": "Operations"
+        },
+        {
+          "date": "2026-06-22T01:20:00Z",
+          "message": "Confirmación de Salida Emitida",
+          "by": "Operations Team"
+        }
+      ],
+      "notes": [
+        "⚠️ Nuevo Impuesto Envases Plástico: Declarar peso neto",
+        "⚠️ Nueva Normativa Acero: Indicar origen en factura",
+        "⚠️ Agrupaje: 7 días libres, luego cargos"
+      ]
+    },
+    {
+      "id": "2117392",
+      "type": "Ocean LCL",
+      "consignee": "Client A",
+      "country": "Spain",
+      "status": "confirmed",
+      "status_label": "CONFIRMACIÓN DE SALIDA RECIBIDA",
+      "confirmed_by": "Operations Team",
+      "confirmed_date": "2026-06-08T12:09:00Z",
+      "departure_date": "2026-06-13T00:00:00Z",
+      "eta_date": "2026-07-30T00:00:00Z",
+      "bl_number": "TBD",
+      "documentation": {
+        "bill_of_lading": {
+          "status": "completed",
+          "label": "Bill of Lading (BL)"
+        },
+        "commercial_invoice": {
+          "status": "pending",
+          "label": "Factura Comercial"
+        },
+        "packing_list": {
+          "status": "pending",
+          "label": "Packing List"
+        },
+        "dispatch_authorization": {
+          "status": "pending",
+          "label": "Autorización de Despacho"
+        }
+      },
+      "updates": [
+        {
+          "date": "2026-07-01T15:15:00Z",
+          "message": "Confirmación de estado actualizada",
+          "by": "Operations Team"
+        },
+        {
+          "date": "2026-06-29T14:34:00Z",
+          "message": "Confirmación de salida recibida",
+          "by": "Operations Team"
+        },
+        {
+          "date": "2026-06-08T12:09:00Z",
+          "message": "Primera confirmación de salida",
+          "by": "Operations Team"
+        }
+      ],
+      "notes": [
+        "⚠️ Documentación pendiente de envío",
+        "⚠️ Agrupaje: 7 días libres"
+      ]
+    },
+    {
+      "id": "96fda9f8-709b-40f5-a7f0-4708a4863cef",
+      "type": "Ocean LCL",
+      "consignee": "Client A",
+      "country": "Spain",
+      "status": "in_transit",
+      "status_label": "SHIPMENT DEPARTED",
+      "confirmed_by": "iContainers",
+      "confirmed_date": "2026-07-03T12:00:03Z",
+      "departure_date": "2026-07-03T12:00:03Z",
+      "eta_date": "2026-07-30T00:00:00Z",
+      "bl_number": "96fda9f8-709b-40f5-a7f0-4708a4863cef",
+      "documentation": {
+        "bill_of_lading": {
+          "status": "completed",
+          "label": "Bill of Lading (BL)"
+        },
+        "tracking_info": {
+          "status": "active",
+          "label": "Rastreo en tiempo real"
+        }
+      },
+      "updates": [
+        {
+          "date": "2026-07-03T12:00:03Z",
+          "message": "🚢 Shipment Departed - Salida confirmada",
+          "by": "iContainers"
+        }
+      ],
+      "notes": [
+        "✅ En tránsito activamente",
+        "📍 Rastreo disponible en plataforma iContainers"
+      ]
+    }
+  ],
+  "summary": {
+    "total_shipments": 3,
+    "confirmed": 2,
+    "in_transit": 1,
+    "eta": "2026-07-30",
+    "pending_docs": "Facturas Comerciales, Packing Lists"
+  }
+}
