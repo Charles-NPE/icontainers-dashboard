@@ -1,0 +1,120 @@
+🚀 GUÍA RÁPIDA DE INICIO
+
+═══════════════════════════════════════════════════════════════
+
+OPCIÓN 1: USAR DIRECTAMENTE (SIN INSTALAR NADA)
+═══════════════════════════════════════════════════════════════
+
+1. Abre el archivo: standalone.html
+2. ¡Listo! Dashboard funcionando en tu navegador
+
+✅ Ventajas:
+   - Sin servidor requerido
+   - Sin dependencias externas
+   - Funciona offline
+   - Un solo archivo
+
+═══════════════════════════════════════════════════════════════
+
+OPCIÓN 2: CON SERVIDOR LOCAL
+═══════════════════════════════════════════════════════════════
+
+1. Descarga todos los archivos
+2. Abre terminal en la carpeta
+3. Ejecuta: python3 -m http.server 8000
+4. Abre: http://localhost:8000
+5. Luego abre index.html
+
+✅ Ventajas:
+   - Datos en JSON separado
+   - Fácil de actualizar datos
+   - Servidor HTTP local
+
+═══════════════════════════════════════════════════════════════
+
+OPCIÓN 3: COMPARTIR EN GITHUB
+═══════════════════════════════════════════════════════════════
+
+1. Sube a tu repo: itpacerin/icontainers-dashboard
+2. Activa GitHub Pages en Settings
+3. Acceso público en: https://github.com/itpacerin/icontainers-dashboard
+4. URL de GitHub Pages: https://itpacerin.github.io/icontainers-dashboard
+
+✅ Ventajas:
+   - Acceso desde cualquier lugar
+   - Versión controlada con git
+   - Fácil de compartir con otros
+   - Historial de cambios
+
+═══════════════════════════════════════════════════════════════
+
+FEATURES DEL DASHBOARD
+═══════════════════════════════════════════════════════════════
+
+📊 Summary Cards
+   • Total shipments
+   • Confirmed count
+   • In-transit count
+   • ETA date
+
+📦 Shipment Cards (3)
+   • Booking ID & Status badge
+   • Departure & ETA dates
+   • B/L number
+   • Documentation checklist
+   • Recent updates timeline
+   • Important notes
+
+🎨 Design
+   • Dark theme profesional
+   • Gradientes azul-verde
+   • Totalmente responsive
+   • Animaciones suaves
+
+⚙️ Funciones
+   • 🖨️ Print to PDF
+   • 💾 Export JSON
+   • 📱 Mobile responsive
+   • 🔄 Real-time timestamps
+
+═══════════════════════════════════════════════════════════════
+
+ACTUALIZAR DATOS
+═══════════════════════════════════════════════════════════════
+
+Si usas index.html:
+1. Edita shipments.json con datos nuevos
+2. Refresca el navegador
+3. Los cambios aparecen al instante
+
+Si usas standalone.html:
+1. Edita la sección "const shipmentData = { ... }"
+2. Guarda el archivo
+3. Refresca el navegador
+
+═══════════════════════════════════════════════════════════════
+
+SOPORTE NAVEGADORES
+═══════════════════════════════════════════════════════════════
+
+✅ Chrome/Chromium 90+
+✅ Firefox 88+
+✅ Safari 14+
+✅ Edge 90+
+
+═══════════════════════════════════════════════════════════════
+
+CONTACTO & SOPORTE
+═══════════════════════════════════════════════════════════════
+
+Creado: 03/07/2026
+Versión: 1.0
+Status: Producción ✅
+
+Dashboard creado con:
+• HTML5 & CSS3
+• JavaScript vanilla (sin frameworks)
+• JSON para datos
+• Git para versioning
+
+═══════════════════════════════════════════════════════════════
