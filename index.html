@@ -318,7 +318,6 @@
         <div class="controls">
             <button onclick="printDashboard()">🖨️ Print / PDF</button>
             <button onclick="exportJSON()">💾 Export Data</button>
-            <button onclick="refreshData()">🔄 Refresh</button>
         </div>
         
         <div class="summary-grid" id="summaryContainer"></div>
@@ -327,23 +326,162 @@
         
         <footer>
             <div class="last-update" id="lastUpdate"></div>
-            <div class="version">Dashboard v1.0 • iContainers Tracking System</div>
+            <div class="version">Dashboard v1.0 Standalone • iContainers Tracking System</div>
         </footer>
     </div>
     
     <script>
-        async function loadData() {
-            try {
-                const response = await fetch('shipments.json');
-                const data = await response.json();
-                renderDashboard(data);
-                updateLastRefresh();
-            } catch (error) {
-                console.error('Error loading shipments:', error);
-                document.getElementById('shipmentsContainer').innerHTML = 
-                    '<p style="color: #ef4444;">Error loading shipment data. Please ensure shipments.json is in the same directory.</p>';
+        // Embedded shipment data - no external file needed
+        const shipmentData = {
+            "shipments": [
+                {
+                    "id": "2117673",
+                    "type": "Ocean LCL",
+                    "consignee": "Client A",
+                    "country": "Spain",
+                    "status": "confirmed",
+                    "status_label": "CONFIRMACIÓN DE SALIDA EMITIDA",
+                    "confirmed_by": "Operations Team",
+                    "confirmed_date": "2026-06-22T01:20:00Z",
+                    "departure_date": "2026-06-13T00:00:00Z",
+                    "eta_date": "2026-07-30T00:00:00Z",
+                    "bl_number": "OBD HBL-BPIO26052496-3",
+                    "documentation": {
+                        "bill_of_lading": {
+                            "status": "completed",
+                            "label": "Bill of Lading (BL)"
+                        },
+                        "commercial_invoice": {
+                            "status": "pending",
+                            "label": "Factura Comercial"
+                        },
+                        "packing_list": {
+                            "status": "pending",
+                            "label": "Packing List"
+                        },
+                        "dispatch_authorization": {
+                            "status": "pending",
+                            "label": "Autorización de Despacho"
+                        }
+                    },
+                    "updates": [
+                        {
+                            "date": "2026-07-03T00:00:00Z",
+                            "message": "Última actualización - Espera confirmación",
+                            "by": "Sistema"
+                        },
+                        {
+                            "date": "2026-07-01T00:00:00Z",
+                            "message": "Predua enviado - A espera factura de impuestos",
+                            "by": "Operations"
+                        },
+                        {
+                            "date": "2026-06-22T01:20:00Z",
+                            "message": "Confirmación de Salida Emitida",
+                            "by": "Operations Team"
+                        }
+                    ],
+                    "notes": [
+                        "⚠️ Nuevo Impuesto Envases Plástico: Declarar peso neto",
+                        "⚠️ Nueva Normativa Acero: Indicar origen en factura",
+                        "⚠️ Agrupaje: 7 días libres, luego cargos"
+                    ]
+                },
+                {
+                    "id": "2117392",
+                    "type": "Ocean LCL",
+                    "consignee": "Client A",
+                    "country": "Spain",
+                    "status": "confirmed",
+                    "status_label": "CONFIRMACIÓN DE SALIDA RECIBIDA",
+                    "confirmed_by": "Operations Team",
+                    "confirmed_date": "2026-06-08T12:09:00Z",
+                    "departure_date": "2026-06-13T00:00:00Z",
+                    "eta_date": "2026-07-30T00:00:00Z",
+                    "bl_number": "TBD",
+                    "documentation": {
+                        "bill_of_lading": {
+                            "status": "completed",
+                            "label": "Bill of Lading (BL)"
+                        },
+                        "commercial_invoice": {
+                            "status": "pending",
+                            "label": "Factura Comercial"
+                        },
+                        "packing_list": {
+                            "status": "pending",
+                            "label": "Packing List"
+                        },
+                        "dispatch_authorization": {
+                            "status": "pending",
+                            "label": "Autorización de Despacho"
+                        }
+                    },
+                    "updates": [
+                        {
+                            "date": "2026-07-01T15:15:00Z",
+                            "message": "Confirmación de estado actualizada",
+                            "by": "Operations Team"
+                        },
+                        {
+                            "date": "2026-06-29T14:34:00Z",
+                            "message": "Confirmación de salida recibida",
+                            "by": "Operations Team"
+                        },
+                        {
+                            "date": "2026-06-08T12:09:00Z",
+                            "message": "Primera confirmación de salida",
+                            "by": "Operations Team"
+                        }
+                    ],
+                    "notes": [
+                        "⚠️ Documentación pendiente de envío",
+                        "⚠️ Agrupaje: 7 días libres"
+                    ]
+                },
+                {
+                    "id": "96fda9f8-709b-40f5-a7f0-4708a4863cef",
+                    "type": "Ocean LCL",
+                    "consignee": "Client A",
+                    "country": "Spain",
+                    "status": "in_transit",
+                    "status_label": "SHIPMENT DEPARTED",
+                    "confirmed_by": "iContainers",
+                    "confirmed_date": "2026-07-03T12:00:03Z",
+                    "departure_date": "2026-07-03T12:00:03Z",
+                    "eta_date": "2026-07-30T00:00:00Z",
+                    "bl_number": "96fda9f8-709b-40f5-a7f0-4708a4863cef",
+                    "documentation": {
+                        "bill_of_lading": {
+                            "status": "completed",
+                            "label": "Bill of Lading (BL)"
+                        },
+                        "tracking_info": {
+                            "status": "active",
+                            "label": "Rastreo en tiempo real"
+                        }
+                    },
+                    "updates": [
+                        {
+                            "date": "2026-07-03T12:00:03Z",
+                            "message": "🚢 Shipment Departed - Salida confirmada",
+                            "by": "iContainers"
+                        }
+                    ],
+                    "notes": [
+                        "✅ En tránsito activamente",
+                        "📍 Rastreo disponible en plataforma iContainers"
+                    ]
+                }
+            ],
+            "summary": {
+                "total_shipments": 3,
+                "confirmed": 2,
+                "in_transit": 1,
+                "eta": "2026-07-30",
+                "pending_docs": "Facturas Comerciales, Packing Lists"
             }
-        }
+        };
         
         function renderDashboard(data) {
             renderSummary(data.summary);
@@ -448,10 +586,8 @@
             window.print();
         }
         
-        async function exportJSON() {
-            const response = await fetch('shipments.json');
-            const data = await response.json();
-            const dataStr = JSON.stringify(data, null, 2);
+        function exportJSON() {
+            const dataStr = JSON.stringify(shipmentData, null, 2);
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
@@ -460,12 +596,11 @@
             link.click();
         }
         
-        function refreshData() {
-            loadData();
-        }
-        
         // Load data on page load
-        window.addEventListener('load', loadData);
+        window.addEventListener('load', () => {
+            renderDashboard(shipmentData);
+            updateLastRefresh();
+        });
     </script>
 </body>
 </html>
