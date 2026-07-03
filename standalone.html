@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iContainers Shipment Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1em;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .summary-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .summary-card:hover {
+            border-color: rgba(148, 163, 184, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        
+        .summary-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .summary-label {
+            color: #94a3b8;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .shipments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .shipment-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .shipment-card:hover {
+            border-color: rgba(148, 163, 184, 0.5);
+            background: rgba(30, 41, 59, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .shipment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            padding-bottom: 15px;
+        }
+        
+        .booking-id {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #60a5fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-confirmed {
+            background: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+        
+        .status-in-transit {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
+        .shipment-info {
+            margin-bottom: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            font-size: 0.95em;
+        }
+        
+        .info-label {
+            color: #94a3b8;
+        }
+        
+        .info-value {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+        
+        .docs-section {
+            margin-bottom: 20px;
+        }
+        
+        .docs-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            font-size: 0.95em;
+        }
+        
+        .doc-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 0.9em;
+        }
+        
+        .doc-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .doc-completed {
+            color: #34d399;
+        }
+        
+        .doc-pending {
+            color: #f59e0b;
+        }
+        
+        .doc-active {
+            color: #60a5fa;
+        }
+        
+        .timeline {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+            font-size: 0.95em;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.85em;
+            padding-left: 10px;
+            border-left: 2px solid rgba(96, 165, 250, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        .timeline-date {
+            color: #94a3b8;
+            min-width: 80px;
+        }
+        
+        .timeline-message {
+            color: #cbd5e1;
+        }
+        
+        .notes-section {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 3px solid #f59e0b;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #fcd34d;
+        }
+        
+        .note-item {
+            margin: 5px 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            color: #64748b;
+            font-size: 0.9em;
+        }
+        
+        .last-update {
+            margin-bottom: 10px;
+        }
+        
+        .version {
+            color: #475569;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .controls {
+                display: none;
+            }
+            .shipment-card {
+                background: white;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            .shipments-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 iContainers Shipment Tracker</h1>
+            <p class="subtitle">Real-time monitoring dashboard for your ocean freight shipments</p>
+        </header>
+        
+        <div class="controls">
+            <button onclick="printDashboard()">🖨️ Print / PDF</button>
+            <button onclick="exportJSON()">💾 Export Data</button>
+        </div>
+        
+        <div class="summary-grid" id="summaryContainer"></div>
+        
+        <div class="shipments-grid" id="shipmentsContainer"></div>
+        
+        <footer>
+            <div class="last-update" id="lastUpdate"></div>
+            <div class="version">Dashboard v1.0 Standalone • iContainers Tracking System</div>
+        </footer>
+    </div>
+    
+    <script>
+        // Embedded shipment data - no external file needed
+        const shipmentData = {
+            "shipments": [
+                {
+                    "id": "2117673",
+                    "type": "Ocean LCL",
+                    "consignee": "Client A",
+                    "country": "Spain",
+                    "status": "confirmed",
+                    "status_label": "CONFIRMACIÓN DE SALIDA EMITIDA",
+                    "confirmed_by": "Operations Team",
+                    "confirmed_date": "2026-06-22T01:20:00Z",
+                    "departure_date": "2026-06-13T00:00:00Z",
+                    "eta_date": "2026-07-30T00:00:00Z",
+                    "bl_number": "OBD HBL-BPIO26052496-3",
+                    "documentation": {
+                        "bill_of_lading": {
+                            "status": "completed",
+                            "label": "Bill of Lading (BL)"
+                        },
+                        "commercial_invoice": {
+                            "status": "pending",
+                            "label": "Factura Comercial"
+                        },
+                        "packing_list": {
+                            "status": "pending",
+                            "label": "Packing List"
+                        },
+                        "dispatch_authorization": {
+                            "status": "pending",
+                            "label": "Autorización de Despacho"
+                        }
+                    },
+                    "updates": [
+                        {
+                            "date": "2026-07-03T00:00:00Z",
+                            "message": "Última actualización - Espera confirmación",
+                            "by": "Sistema"
+                        },
+                        {
+                            "date": "2026-07-01T00:00:00Z",
+                            "message": "Predua enviado - A espera factura de impuestos",
+                            "by": "Operations"
+                        },
+                        {
+                            "date": "2026-06-22T01:20:00Z",
+                            "message": "Confirmación de Salida Emitida",
+                            "by": "Operations Team"
+                        }
+                    ],
+                    "notes": [
+                        "⚠️ Nuevo Impuesto Envases Plástico: Declarar peso neto",
+                        "⚠️ Nueva Normativa Acero: Indicar origen en factura",
+                        "⚠️ Agrupaje: 7 días libres, luego cargos"
+                    ]
+                },
+                {
+                    "id": "2117392",
+                    "type": "Ocean LCL",
+                    "consignee": "Client A",
+                    "country": "Spain",
+                    "status": "confirmed",
+                    "status_label": "CONFIRMACIÓN DE SALIDA RECIBIDA",
+                    "confirmed_by": "Operations Team",
+                    "confirmed_date": "2026-06-08T12:09:00Z",
+                    "departure_date": "2026-06-13T00:00:00Z",
+                    "eta_date": "2026-07-30T00:00:00Z",
+                    "bl_number": "TBD",
+                    "documentation": {
+                        "bill_of_lading": {
+                            "status": "completed",
+                            "label": "Bill of Lading (BL)"
+                        },
+                        "commercial_invoice": {
+                            "status": "pending",
+                            "label": "Factura Comercial"
+                        },
+                        "packing_list": {
+                            "status": "pending",
+                            "label": "Packing List"
+                        },
+                        "dispatch_authorization": {
+                            "status": "pending",
+                            "label": "Autorización de Despacho"
+                        }
+                    },
+                    "updates": [
+                        {
+                            "date": "2026-07-01T15:15:00Z",
+                            "message": "Confirmación de estado actualizada",
+                            "by": "Operations Team"
+                        },
+                        {
+                            "date": "2026-06-29T14:34:00Z",
+                            "message": "Confirmación de salida recibida",
+                            "by": "Operations Team"
+                        },
+                        {
+                            "date": "2026-06-08T12:09:00Z",
+                            "message": "Primera confirmación de salida",
+                            "by": "Operations Team"
+                        }
+                    ],
+                    "notes": [
+                        "⚠️ Documentación pendiente de envío",
+                        "⚠️ Agrupaje: 7 días libres"
+                    ]
+                },
+                {
+                    "id": "96fda9f8-709b-40f5-a7f0-4708a4863cef",
+                    "type": "Ocean LCL",
+                    "consignee": "Client A",
+                    "country": "Spain",
+                    "status": "in_transit",
+                    "status_label": "SHIPMENT DEPARTED",
+                    "confirmed_by": "iContainers",
+                    "confirmed_date": "2026-07-03T12:00:03Z",
+                    "departure_date": "2026-07-03T12:00:03Z",
+                    "eta_date": "2026-07-30T00:00:00Z",
+                    "bl_number": "96fda9f8-709b-40f5-a7f0-4708a4863cef",
+                    "documentation": {
+                        "bill_of_lading": {
+                            "status": "completed",
+                            "label": "Bill of Lading (BL)"
+                        },
+                        "tracking_info": {
+                            "status": "active",
+                            "label": "Rastreo en tiempo real"
+                        }
+                    },
+                    "updates": [
+                        {
+                            "date": "2026-07-03T12:00:03Z",
+                            "message": "🚢 Shipment Departed - Salida confirmada",
+                            "by": "iContainers"
+                        }
+                    ],
+                    "notes": [
+                        "✅ En tránsito activamente",
+                        "📍 Rastreo disponible en plataforma iContainers"
+                    ]
+                }
+            ],
+            "summary": {
+                "total_shipments": 3,
+                "confirmed": 2,
+                "in_transit": 1,
+                "eta": "2026-07-30",
+                "pending_docs": "Facturas Comerciales, Packing Lists"
+            }
+        };
+        
+        function renderDashboard(data) {
+            renderSummary(data.summary);
+            renderShipments(data.shipments);
+        }
+        
+        function renderSummary(summary) {
+            const container = document.getElementById('summaryContainer');
+            const cards = [
+                { label: 'Total Shipments', value: summary.total_shipments, color: '#60a5fa' },
+                { label: 'Confirmed', value: summary.confirmed, color: '#34d399' },
+                { label: 'In Transit', value: summary.in_transit, color: '#f59e0b' },
+                { label: 'ETA', value: formatDate(summary.eta), color: '#a78bfa' }
+            ];
+            
+            container.innerHTML = cards.map(card => `
+                <div class="summary-card">
+                    <div class="summary-number" style="color: ${card.color};">${card.value}</div>
+                    <div class="summary-label">${card.label}</div>
+                </div>
+            `).join('');
+        }
+        
+        function renderShipments(shipments) {
+            const container = document.getElementById('shipmentsContainer');
+            container.innerHTML = shipments.map(shipment => `
+                <div class="shipment-card">
+                    <div class="shipment-header">
+                        <div class="booking-id">Booking #${shipment.id}</div>
+                        <span class="status-badge status-${shipment.status}">
+                            ${shipment.status === 'in_transit' ? '🚢 ' : '✓ '}${shipment.status_label}
+                        </span>
+                    </div>
+                    
+                    <div class="shipment-info">
+                        <div class="info-row">
+                            <span class="info-label">Type</span>
+                            <span class="info-value">${shipment.type}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Departure</span>
+                            <span class="info-value">${formatDate(shipment.departure_date)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">ETA</span>
+                            <span class="info-value">${formatDate(shipment.eta_date)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">B/L Number</span>
+                            <span class="info-value" style="font-family: monospace; font-size: 0.9em;">${shipment.bl_number}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="docs-section">
+                        <div class="docs-title">📄 Documentation Status</div>
+                        ${Object.values(shipment.documentation).map(doc => `
+                            <div class="doc-item doc-${doc.status}">
+                                <span class="doc-icon">${doc.status === 'completed' ? '✅' : doc.status === 'active' ? '📍' : '⏳'}</span>
+                                <span>${doc.label}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    ${shipment.updates && shipment.updates.length > 0 ? `
+                        <div class="timeline">
+                            <div class="timeline-title">📅 Recent Updates</div>
+                            ${shipment.updates.slice(0, 3).map(update => `
+                                <div class="timeline-item">
+                                    <span class="timeline-date">${formatDate(update.date)}</span>
+                                    <span class="timeline-message">${update.message}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    ${shipment.notes && shipment.notes.length > 0 ? `
+                        <div class="notes-section">
+                            ${shipment.notes.map(note => `<div class="note-item">${note}</div>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('es-ES', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+        
+        function updateLastRefresh() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                `Last updated: ${now.toLocaleString('es-ES')}`;
+        }
+        
+        function printDashboard() {
+            window.print();
+        }
+        
+        function exportJSON() {
+            const dataStr = JSON.stringify(shipmentData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `shipments_export_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+        
+        // Load data on page load
+        window.addEventListener('load', () => {
+            renderDashboard(shipmentData);
+            updateLastRefresh();
+        });
+    </script>
+</body>
+</html>
